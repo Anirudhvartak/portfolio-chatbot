@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Chatbot Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset only for settings page elements, not chatbot */
+        .settings-container * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .settings-header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .settings-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #108AE6;
+            margin-bottom: 8px;
+        }
+        
+        .settings-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .settings-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        .settings-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .settings-nav {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .settings-nav li {
+            margin-bottom: 8px;
+        }
+        
+        .settings-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .settings-nav a:hover,
+        .settings-nav a.active {
+            background: #108ae610;
+            color: #108AE6;
+        }
+        
+        .settings-nav i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .settings-main {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .settings-section {
+            margin-bottom: 40px;
+        }
+        
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .settings-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .form-group .help-text {
+            display: block;
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="color"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #108AE6;
+            box-shadow: 0 0 0 3px rgba(16, 138, 230, 0.1);
+        }
+        
+        .form-group input[type="color"] {
+            height: 44px;
+            cursor: pointer;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .color-input-group {
+            display: grid;
+            grid-template-columns: 1fr 80px;
+            gap: 12px;
+        }
+        
+        .color-input-group input[type="text"] {
+            text-transform: uppercase;
+        }
+        
+        .switch-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 26px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #108AE6;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        /* Scope btn styles to settings form only */
+        .settings-main .btn-primary {
+            background: #108AE6;
+            color: white;
+        }
+        
+        .settings-main .btn-primary:hover {
+            background: #0d75c5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 138, 230, 0.3);
+        }
+        
+        .settings-main .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+        
+        .settings-main .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 12px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            margin-top: 30px;
+        }
+        
+        /* Ensure settings buttons don't affect chatbot */
+        .actions .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .color-preview {
+            display: inline-block;
+            width: 100px;
+            height: 40px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        
+        /* Live Preview Widget */
+        .live-preview-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .preview-toggle {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 10px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        
+        .preview-toggle:hover {
+            background: #108AE6;
+            color: white;
+        }
+        
+        .preview-toggle i {
+            font-size: 14px;
+        }
+        
+        /* Hide default chatbot elements for cleaner preview */
+        #chatbot-container .chatbot-predefinedQues {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        /* Ensure chatbot uses its own styles */
+        #chatbot-container,
+        #chatbot-container *,
+        .chatbot-OpenIcon,
+        .chatbot-OpenIcon * {
+            box-sizing: border-box;
+        }
+        
+        /* Restore chatbot button styles */
+        #chatbot-container button,
+        #chatbot-container .btn {
+            font-family: 'Public Sans', sans-serif;
+        }
+        
+        .alert {
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .settings-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .settings-sidebar {
+                position: static;
+            }
+            
+            .color-input-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .live-preview-container {
+                bottom: 10px;
+                right: 10px;
+            }
+            
+            .mini-chatbot-widget {
+                position: fixed;
+                bottom: 0 !important;
+                right: 0 !important;
+                left: 0 !important;
+                top: auto !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: 70vh !important;
+                max-height: 70vh !important;
+                border-radius: 20px 20px 0 0 !important;
+                box-shadow: 0 -4px 24px rgba(0,0,0,0.2) !important;
+            }
+            
+            .mini-chatbot-header {
+                padding: 14px 16px;
+                border-radius: 20px 20px 0 0;
+            }
+            
+            .mini-message.bot .mini-msg-bubble,
+            .mini-message.user .mini-msg-bubble {
+                max-width: 90%;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .settings-header h1 {
+                font-size: 22px;
+            }
+            
+            .settings-main {
+                padding: 20px 16px;
+            }
+            
+            .form-group label {
+                font-size: 13px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .mini-chatbot-widget {
+                height: 80vh !important;
+                max-height: 80vh !important;
+            }
+            
+            .chatbot-widget {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h1><i class="fas fa-cog"></i> Portfolio Assistant Configuration</h1>
+            <p>Customize your portfolio chatbot appearance, behavior, and response settings</p>
+        </div>
+        
+        <div id="alert" class="alert success">
+            <i class="fas fa-check-circle"></i> Settings saved successfully!
+        </div>
+        
+        <div class="settings-content">
+            <aside class="settings-sidebar">
+                <ul class="settings-nav">
+                    <li><a href="#general" class="active"><i class="fas fa-sliders-h"></i> General</a></li>
+                    <li><a href="#theme"><i class="fas fa-palette"></i> Theme Colors</a></li>
+                    <li><a href="#behavior"><i class="fas fa-toggle-on"></i> Behavior</a></li>
+                    <li><a href="#api"><i class="fas fa-plug"></i> API Settings</a></li>
+                    <li><a href="#content"><i class="fas fa-list"></i> Content</a></li>
+                </ul>
+            </aside>
+            
+            <main class="settings-main">
+                <form id="settingsForm">
+                    <!-- General Settings -->
+                    <div class="settings-section" id="general">
+                        <h2>General Settings</h2>
+                        
+                        <div class="form-group">
+                            <label for="aiheader">Bot Name</label>
+                            <input type="text" id="aiheader" name="aiheader" value="Anirudh's AI Assistant">
+                            <span class="help-text">The name displayed in the chatbot header</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="aityping">Typing Indicator Text</label>
+                            <input type="text" id="aityping" name="aityping" value="AI Assistant is typing...">
+                            <span class="help-text">Text shown when bot is responding</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="font_family">Font Family</label>
+                            <select id="font_family" name="font_family">
+                                <option value="Public Sans">Public Sans</option>
+                                <option value="Arial">Arial</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="font_size">Base Font Size</label>
+                            <input type="text" id="font_size" name="font_size" value="14px">
+                        </div>
+                    </div>
+                    
+                    <!-- Theme Colors -->
+                    <div class="settings-section" id="theme">
+                        <h2>Theme Colors</h2>
+                        
+                        <div class="form-group">
+                            <label for="basetheme_color">Primary Theme Color</label>
+                            <div class="color-input-group">
+                                <input type="text" id="basetheme_color" name="basetheme_color" value="#108AE6" pattern="#[0-9A-Fa-f]{6}">
+                                <input type="color" id="basetheme_color_picker" value="#108AE6">
+                            </div>
+                            <span class="help-text">Main color for headers, buttons, and links</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="header_bg">Header Background Color</label>
+                            <div class="color-input-group">
+                                <input type="text" id="header_bg" name="header_bg" value="#00B5F9" pattern="#[0-9A-Fa-f]{6}">
+                                <input type="color" id="header_bg_picker" value="#00B5F9">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="link_color">Link Color</label>
+                            <div class="color-input-group">
+                                <input type="text" id="link_color" name="link_color" value="#108AE6" pattern="#[0-9A-Fa-f]{6}">
+                                <input type="color" id="link_color_picker" value="#108AE6">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="font_color">Text Color</label>
+                            <div class="color-input-group">
+                                <input type="text" id="font_color" name="font_color" value="#333333" pattern="#[0-9A-Fa-f]{6}">
+                                <input type="color" id="font_color_picker" value="#333333">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Behavior Settings -->
+                    <div class="settings-section" id="behavior">
+                        <h2>Behavior Settings</h2>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Floating Bot Icon</label>
+                                <span class="help-text">Display chatbot icon at bottom-right corner</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="floating_bot_icon" name="floating_bot_icon" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Show Welcome Bubble</label>
+                                <span class="help-text">Display "How can I help you today?" bubble</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="show_welcome_bubble" name="show_welcome_bubble" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="bubble_delay">Bubble Delay (milliseconds)</label>
+                            <input type="text" id="bubble_delay" name="bubble_delay" value="1000">
+                            <span class="help-text">Delay before showing welcome bubble after page load</span>
+                        </div>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Enable Fullscreen Mode</label>
+                                <span class="help-text">Allow users to expand chatbot to fullscreen</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="enable_fullscreen" name="enable_fullscreen" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Enable Voice Input</label>
+                                <span class="help-text">Allow voice/speech input in chat</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="enable_voice_input" name="enable_voice_input" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Show Typing Indicator</label>
+                                <span class="help-text">Display typing animation when bot is responding</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="show_typing_indicator" name="show_typing_indicator" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="switch-wrapper">
+                            <div>
+                                <label>Auto-Open Widget</label>
+                                <span class="help-text">Automatically open chat widget on page load</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="auto_open_widget" name="auto_open_widget">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- API Settings -->
+                    <div class="settings-section" id="api">
+                        <h2>API Integration Settings</h2>
+                        
+                        <div class="form-group">
+                            <label for="ai_bot_url">AI Bot URL</label>
+                            <input type="text" id="ai_bot_url" name="ai_bot_url" placeholder="https://your-api-endpoint.com/chatbot/">
+                            <span class="help-text">Backend API endpoint for AI chatbot (optional - uses mock responses if empty)</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ai_bot_auth_token">AI Bot Auth Token</label>
+                            <input type="text" id="ai_bot_auth_token" name="ai_bot_auth_token" placeholder="Enter auth token">
+                            <span class="help-text">Authentication token for API requests</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="ai_bot_intent_token">AI Bot Intent Token</label>
+                            <input type="text" id="ai_bot_intent_token" name="ai_bot_intent_token" placeholder="Enter intent token">
+                        </div>
+                    </div>
+                    
+                    <!-- Content Settings -->
+                    <div class="settings-section" id="content">
+                        <h2>Content & Questions</h2>
+                        
+                        <div class="form-group">
+                            <label for="fullscreen_questions">Fullscreen Suggested Questions (JSON)</label>
+                            <textarea id="fullscreen_questions" name="fullscreen_questions" rows="4">["Tell me about Anirudh's experience", "What are his technical skills?", "Show me his projects", "How can I contact him?"]</textarea>
+                            <span class="help-text">Questions shown on fullscreen landing page (JSON array format)</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="top_questions">Top Suggested Questions (JSON)</label>
+                            <textarea id="top_questions" name="top_questions" rows="6">[
+  {"text": "Tell me about Anirudh"},
+  {"text": "What technologies does he work with?"},
+  {"text": "Show me his best projects"},
+  {"text": "What awards has he won?"}
+]</textarea>
+                            <span class="help-text">Default suggested questions for users (JSON array format)</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetToDefaults()">
+                            <i class="fas fa-undo"></i> Reset to Defaults
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="window.open('index.html', '_blank')">
+                            <i class="fas fa-external-link-alt"></i> Preview Chatbot
+                        </button>
+                    </div>
+                </form>
+            </main>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/theme.js"></script>
+    <script src="assets/js/config.js"></script>
+    
+    <script>
+        // Load saved settings on page load
+        window.addEventListener('DOMContentLoaded', loadSettings);
+        
+        // Color picker sync with live preview
+        document.querySelectorAll('input[type="color"]').forEach(picker => {
+            const textInput = document.getElementById(picker.id.replace('_picker', ''));
+            
+            picker.addEventListener('input', (e) => {
+                textInput.value = e.target.value.toUpperCase();
+                updatePreview(textInput.id, e.target.value);
+                applyLiveTheme(); // Apply changes in real-time
+            });
+            
+            textInput.addEventListener('input', (e) => {
+                if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) {
+                    picker.value = e.target.value;
+                    updatePreview(textInput.id, e.target.value);
+                    applyLiveTheme(); // Apply changes in real-time
+                }
+            });
+        });
+        
+        // Live update for text inputs
+        ['aiheader', 'aityping', 'font_family', 'font_size'].forEach(id => {
+            const input = document.getElementById(id);
+            if (input) {
+                input.addEventListener('input', () => {
+                    applyLiveTheme();
+                });
+            }
+        });
+        
+        // Live update for checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', applyLiveTheme);
+        });
+        
+        function updatePreview(id, color) {
+            const preview = document.getElementById(id + '_preview');
+            if (preview) {
+                preview.style.background = color;
+            }
+        }
+        
+        // Initialize all color previews on load
+        function initializePreviews() {
+            ['basetheme_color', 'header_bg', 'link_color', 'font_color'].forEach(id => {
+                const input = document.getElementById(id);
+                if (input) {
+                    updatePreview(id, input.value);
+                }
+            });
+        }
+        
+        function applyLiveTheme() {
+            const basetheme = document.getElementById('basetheme_color').value;
+            const headerBg = document.getElementById('header_bg').value;
+            const botName = document.getElementById('aiheader').value;
+            const typingText = document.getElementById('aityping').value;
+            const fontFamily = document.getElementById('font_family').value;
+            
+            // Calculate color variations
+            const basethemeDark = darkenColor(basetheme, 20);
+            const basethemeSoft = lightenColor(basetheme, 40);
+            const basethemeLight = lightenColor(basetheme, 85);
+            
+            // Apply to CSS variables
+            const root = document.documentElement;
+            root.style.setProperty('--basetheme-color', basetheme);
+            root.style.setProperty('--basetheme-color-dark', basethemeDark);
+            root.style.setProperty('--basetheme-color-soft', basethemeSoft);
+            root.style.setProperty('--basetheme-color-light', basethemeLight);
+            
+            // Update font if changed
+            if (fontFamily) {
+                document.body.style.fontFamily = fontFamily + ', sans-serif';
+            }
+        }
+        
+        // Color manipulation functions
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+        
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+        }
+        
+        function darkenColor(hex, percent = 20) {
+            const rgb = hexToRgb(hex);
+            if (!rgb) return hex;
+            
+            const r = Math.max(0, Math.min(255, rgb.r - (rgb.r * percent / 100)));
+            const g = Math.max(0, Math.min(255, rgb.g - (rgb.g * percent / 100)));
+            const b = Math.max(0, Math.min(255, rgb.b - (rgb.b * percent / 100)));
+            
+            return rgbToHex(Math.round(r), Math.round(g), Math.round(b));
+        }
+        
+        function lightenColor(hex, percent = 85) {
+            const rgb = hexToRgb(hex);
+            if (!rgb) return hex;
+            
+            const r = Math.min(255, rgb.r + Math.round((255 - rgb.r) * percent / 100));
+            const g = Math.min(255, rgb.g + Math.round((255 - rgb.g) * percent / 100));
+            const b = Math.min(255, rgb.b + Math.round((255 - rgb.b) * percent / 100));
+            
+            return rgbToHex(r, g, b);
+        }
+        
+        // Form submission
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveSettings();
+        });
+        
+        function saveSettings() {
+            const config = {
+                aiheader: document.getElementById('aiheader').value,
+                aityping: document.getElementById('aityping').value,
+                theme: {
+                    basetheme_color: document.getElementById('basetheme_color').value,
+                    header_bg: document.getElementById('header_bg').value,
+                    link_color: document.getElementById('link_color').value,
+                    font_color: document.getElementById('font_color').value,
+                    font_family: document.getElementById('font_family').value,
+                    font_size: document.getElementById('font_size').value
+                },
+                settings: {
+                    floating_bot_icon: document.getElementById('floating_bot_icon').checked,
+                    show_welcome_bubble: document.getElementById('show_welcome_bubble').checked,
+                    bubble_delay: parseInt(document.getElementById('bubble_delay').value),
+                    enable_fullscreen: document.getElementById('enable_fullscreen').checked,
+                    enable_voice_input: document.getElementById('enable_voice_input').checked,
+                    show_typing_indicator: document.getElementById('show_typing_indicator').checked,
+                    auto_open_widget: document.getElementById('auto_open_widget').checked
+                },
+                api_config: {
+                    ai_bot_url: document.getElementById('ai_bot_url').value,
+                    ai_bot_auth_token: document.getElementById('ai_bot_auth_token').value,
+                    ai_bot_intent_token: document.getElementById('ai_bot_intent_token').value
+                },
+                fullscreen_questions: JSON.parse(document.getElementById('fullscreen_questions').value || '[]'),
+                top_questions: JSON.parse(document.getElementById('top_questions').value || '[]')
+            };
+            
+            localStorage.setItem('chatbot_config', JSON.stringify(config));
+            
+            // Show success message
+            const alert = document.getElementById('alert');
+            alert.classList.add('show');
+            setTimeout(() => alert.classList.remove('show'), 3000);
+            
+            // Update CSS variables
+            applyTheme(config.theme);
+        }
+        
+        function loadSettings() {
+            const saved = localStorage.getItem('chatbot_config');
+            if (!saved) {
+                initializePreviews(); // Initialize previews with default colors
+                return;
+            }
+            
+            const config = JSON.parse(saved);
+            
+            // General
+            if (config.aiheader) document.getElementById('aiheader').value = config.aiheader;
+            if (config.aityping) document.getElementById('aityping').value = config.aityping;
+            
+            // Theme
+            if (config.theme) {
+                if (config.theme.basetheme_color) {
+                    document.getElementById('basetheme_color').value = config.theme.basetheme_color;
+                    document.getElementById('basetheme_color_picker').value = config.theme.basetheme_color;
+                    updatePreview('basetheme_color', config.theme.basetheme_color);
+                }
+                if (config.theme.header_bg) {
+                    document.getElementById('header_bg').value = config.theme.header_bg;
+                    document.getElementById('header_bg_picker').value = config.theme.header_bg;
+                }
+                if (config.theme.link_color) {
+                    document.getElementById('link_color').value = config.theme.link_color;
+                    document.getElementById('link_color_picker').value = config.theme.link_color;
+                }
+                if (config.theme.font_color) {
+                    document.getElementById('font_color').value = config.theme.font_color;
+                    document.getElementById('font_color_picker').value = config.theme.font_color;
+                }
+                if (config.theme.font_family) document.getElementById('font_family').value = config.theme.font_family;
+                if (config.theme.font_size) document.getElementById('font_size').value = config.theme.font_size;
+            }
+            
+            // Behavior
+            if (config.settings) {
+                document.getElementById('floating_bot_icon').checked = config.settings.floating_bot_icon !== false;
+                document.getElementById('show_welcome_bubble').checked = config.settings.show_welcome_bubble !== false;
+                if (config.settings.bubble_delay) document.getElementById('bubble_delay').value = config.settings.bubble_delay;
+                document.getElementById('enable_fullscreen').checked = config.settings.enable_fullscreen !== false;
+                document.getElementById('enable_voice_input').checked = config.settings.enable_voice_input !== false;
+                document.getElementById('show_typing_indicator').checked = config.settings.show_typing_indicator !== false;
+                document.getElementById('auto_open_widget').checked = config.settings.auto_open_widget === true;
+            }
+            
+            // API
+            if (config.api_config) {
+                if (config.api_config.ai_bot_url) document.getElementById('ai_bot_url').value = config.api_config.ai_bot_url;
+                if (config.api_config.ai_bot_auth_token) document.getElementById('ai_bot_auth_token').value = config.api_config.ai_bot_auth_token;
+                if (config.api_config.ai_bot_intent_token) document.getElementById('ai_bot_intent_token').value = config.api_config.ai_bot_intent_token;
+            }
+            
+            // Content
+            if (config.fullscreen_questions) {
+                document.getElementById('fullscreen_questions').value = JSON.stringify(config.fullscreen_questions);
+            }
+            if (config.top_questions) {
+                document.getElementById('top_questions').value = JSON.stringify(config.top_questions, null, 2);
+            }
+            
+            // Initialize all previews after loading
+            initializePreviews();
+        }
+        
+        function applyTheme(theme) {
+            if (!theme) return;
+            
+            const root = document.documentElement;
+            if (theme.basetheme_color) {
+                root.style.setProperty('--basetheme-color', theme.basetheme_color);
+            }
+        }
+        
+        function resetToDefaults() {
+            if (confirm('Are you sure you want to reset all settings to defaults?')) {
+                localStorage.removeItem('chatbot_config');
+                location.reload();
+            }
+        }
+        
+        // Smooth scroll for navigation
+        document.querySelectorAll('.settings-nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Update active state
+                document.querySelectorAll('.settings-nav a').forEach(a => a.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+/* Additional bot-specific styles */
+.fa-comment-alt:before {
+    content: "\f27a";
+}
+
+.fa-file-alt:before {
+    content: "\f15c";
+}
+
+.fa-calendar:before {
+    content: "\f133";
+}
+
+/* Instruction text */
+.instruction-text {
+    margin-bottom: 10px;
+    padding: var(--space-sm);
+    background-color: var(--basetheme-color-light);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+/* Message formatting */
+.chatbot-msg-text h1,
+.chatbot-msg-text h2,
+.chatbot-msg-text h3 {
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.chatbot-msg-text p {
+    margin: var(--space-xs) 0;
+}
+
+.chatbot-msg-text ul,
+.chatbot-msg-text ol {
+    margin: var(--space-sm) 0;
+    padding-left: var(--space-lg);
+}
+
+.chatbot-msg-text a {
+    color: var(--basetheme-color);
+    text-decoration: underline;
+}
+
+.chatbot-msg-text a:hover {
+    color: var(--basetheme-color-dark);
+}
+
+.chatbot-msg-text strong {
+    font-weight: 600;
+}
+
+.chatbot-msg-text code {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: monospace;
+}
+
+.chatbot-msg-text pre {
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+    overflow-x: auto;
+}
+
+.chatbot-msg-text pre code {
+    background-color: transparent;
+    padding: 0;
+}
