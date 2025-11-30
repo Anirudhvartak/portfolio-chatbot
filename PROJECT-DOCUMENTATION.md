@@ -47,7 +47,7 @@ standalone-chatbot/
 ## Core Modules
 
 ### 1. **config.js** - Bot Configuration
-**Location**: `public/assets/js/config.js`
+**Location**: `assets/js/config.js`
 
 **Purpose**: Central configuration hub for all bot settings
 
@@ -83,7 +83,7 @@ BOT_CONFIG = {
 ---
 
 ### 2. **mock-api.js** - Response Engine
-**Location**: `public/assets/js/mock-api.js`
+**Location**: `assets/js/mock-api.js`
 
 **Purpose**: Generates portfolio-specific responses based on user queries
 
@@ -128,7 +128,7 @@ function getAboutResponse() {
 ---
 
 ### 3. **chatbot.js** - Main Logic (Minimized View)
-**Location**: `public/assets/js/chatbot.js`
+**Location**: `assets/js/chatbot.js`
 
 **Purpose**: Core chatbot functionality for minimized widget
 
@@ -165,7 +165,7 @@ $(document).on('click', '.chatbot-dynamicProssBtn', function() {
 ---
 
 ### 4. **chatbotinit.js** - Initialization
-**Location**: `public/assets/js/chatbotinit.js`
+**Location**: `assets/js/chatbotinit.js`
 
 **Purpose**: Bot launcher and widget rendering
 
@@ -178,7 +178,7 @@ $(document).on('click', '.chatbot-dynamicProssBtn', function() {
 ---
 
 ### 5. **theme.js** - Theme System
-**Location**: `public/assets/js/theme.js`
+**Location**: `assets/js/theme.js`
 
 **Purpose**: Dynamic theme application
 
@@ -190,7 +190,7 @@ $(document).on('click', '.chatbot-dynamicProssBtn', function() {
 ---
 
 ### 6. **utils.js** - Helper Functions
-**Location**: `public/assets/js/utils.js`
+**Location**: `assets/js/utils.js`
 
 **Purpose**: Shared utility functions
 
@@ -212,7 +212,7 @@ $(document).on('click', '.chatbot-dynamicProssBtn', function() {
 5. **Application**: Merged config used throughout chatbot
 
 ### Settings Page (`settings.html`)
-**Location**: `public/settings.html`
+**Location**: `settings.html`
 
 **Configurable Options**:
 - Bot name (aiheader)

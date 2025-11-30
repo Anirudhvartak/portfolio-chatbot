@@ -397,7 +397,7 @@
                             chatContainer_sub_question.addClass('hidden');
                             inputGroup.removeClass('hidden');
                             startChatContainer.addClass('hidden');
-                            $('.back-to-home').css("display", "inline-flex");
+                            updateBackToHomeVisibility();
 
                             if (action.sub_questions && Array.isArray(action.sub_questions) && action.sub_questions.length > 0) {
                                 chatContainer_sub_question.html('');
@@ -410,7 +410,7 @@
                                         chatContainer_sub_question.removeClass('hidden');
                                         inputGroup.removeClass('hidden');
                                         startChatContainer.addClass('hidden');
-                                        $('.back-to-home').css("display", "inline-flex");
+                                        updateBackToHomeVisibility();
                                     });
                                     chatContainer_sub_question.append(subBtn);
                                 });
@@ -450,7 +450,7 @@
                         chatBox.removeClass('hide-chatBox');
                         inputGroup.removeClass('hidden');
                         startChatContainer.addClass('hidden');
-                        $('.back-to-home').css("display", "inline-flex");
+                        updateBackToHomeVisibility();
                     });
 
                     questionButtonsContainer.append(questionButton);
@@ -464,7 +464,7 @@
                 chatBox.removeClass('hide-chatBox');
                 inputGroup.removeClass('hidden');
                 startChatContainer.addClass('hidden');
-                $('.back-to-home').css("display", "inline-flex");
+                updateBackToHomeVisibility();
                 scrollChatToBottom({ target: chatBox, timeout: 0 });
             });
 
@@ -476,6 +476,18 @@
                 startChatContainer.removeClass('hidden');
                 $(this).hide();
             });
+
+            // Helper function to manage back-to-home button visibility
+            function updateBackToHomeVisibility() {
+                if (questionButtonsContainer.hasClass('hide-predefined')) {
+                    $('.back-to-home').css("display", "inline-flex");
+                } else {
+                    $('.back-to-home').hide();
+                }
+            }
+            
+            // Check initial state when bot loads
+            updateBackToHomeVisibility();
 
             // Handle dynamic button clicks from bot responses
             $(document).on('click', '.chatbot-dynamicProssBtn', function() {
